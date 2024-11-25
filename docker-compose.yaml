@@ -1,0 +1,29 @@
+version: '3'
+
+services:
+  hearity-airflow-base:
+    build:
+      context: .
+    volumes:
+      - ./airflow:/opt/airflow
+      - ./dags:/opt/airflow/dags
+      - ./logs:/opt/airflow/logs
+      - /var/run/docker.sock:/var/run/docker.sock
+    environment:
+      - TZ=Asia/Jakarta
+      - MONGO_URI=${MONGO_URI}
+      - AIRFLOW__CORE__LOAD_EXAMPLES=False
+    container_name: hearity_airflow
+    restart: always
+
+  airflow-webserver:
+    <<: *hearity-airflow-base
+    command: airflow webserver
+    ports:
+      - "8080:8080"
+    container_name: airflow_webserver
+
+  airflow-scheduler:
+    <<: *hearity-airflow-base
+    command: airflow scheduler
+    container_name: airflow_scheduler

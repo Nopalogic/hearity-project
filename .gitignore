@@ -1,0 +1,8 @@
+# virtual environment
+.env/
+
+# log file directory
+logs/
+
+# containing sensitive info
+dags/etl_forecasting_daily.py
